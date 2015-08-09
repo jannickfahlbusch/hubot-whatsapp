@@ -17,22 +17,6 @@ class Whatsapp extends Adapter
 	reply: (envelope, strings...) ->
 		@robot.logger.info "Reply"
 
-    connect: () ->
-        options = @options
-
-        @wa = whatsapi.createAdapter(
-            msisdn: options.username,
-            username: options.nickname,
-            password: options.password,
-            ccode: options.countrycode
-        );
-        @wa.connect (err) ->
-            if err
-                console.log err
-                return
-            console.log 'Connected'
-            @wa.login @wa.sendIsOnline()
-            return
 
 	run: ->
 		options =
@@ -44,7 +28,19 @@ class Whatsapp extends Adapter
         @options = options
         @connected = false
 
-
+        @wa = whatsapi.createAdapter(
+            msisdn: options.username,
+            username: options.nickname,
+            password: options.password,
+            ccode: options.countrycode
+        ).connect (err) ->
+            if err
+                console.log err
+                return
+            console.log 'Connected'
+            @wa.login @wa.sendIsOnline()
+            @connected = true
+            return
 
 exports.use = (robot) ->
 	new Whatsapp robot
