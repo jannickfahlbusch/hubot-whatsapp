@@ -6,20 +6,16 @@ class Whatsapp extends Adapter
     @robot = robot
 
 	send: (envelope, strings...) ->
-		@robot.logger.info "Send"
+		@wa.sendMessage recipient, strings, (err, id) ->
+            if err
+                console.log err.message
+                return
+            console.log 'Server received message %s', id
+            return
+
 
 	reply: (envelope, strings...) ->
 		@robot.logger.info "Reply"
-
-	run: ->
-		options =
-            username: process.env.HUBOT_WHATSAPP_PHONENUMBER
-            password: process.env.HUBOT_WHATSAPP_PASSWORD
-            nickname: process.env.HUBOT_WHATSAPP_NICKNAME
-            countrycode: process.env.HUBOT_WHATSAPP_COUNTRYCODE
-
-        @options = options
-        @connected = false
 
     connect: () ->
         options = @options
@@ -38,5 +34,17 @@ class Whatsapp extends Adapter
             @wa.login @wa.sendIsOnline()
             return
 
+	run: ->
+		options =
+            username: process.env.HUBOT_WHATSAPP_PHONENUMBER
+            password: process.env.HUBOT_WHATSAPP_PASSWORD
+            nickname: process.env.HUBOT_WHATSAPP_NICKNAME
+            countrycode: process.env.HUBOT_WHATSAPP_COUNTRYCODE
+
+        @options = options
+        @connected = false
+
+
+
 exports.use = (robot) ->
-	new Sample robot
+	new Whatsapp robot
