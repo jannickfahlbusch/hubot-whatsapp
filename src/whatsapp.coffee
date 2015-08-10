@@ -34,9 +34,10 @@ class Whatsapp extends Adapter
                 console.log err
                 return
             self.wa.sendIsOnline()
+            self.emit 'connected'
 
 	send: (envelope, strings...) ->
-        recipient = envelope.user.name
+        recipient = envelope.user.name.split('@')[0]
         for msg in strings
 		          @wa.sendMessage recipient, msg, (err, id) ->
                       if err
