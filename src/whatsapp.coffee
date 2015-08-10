@@ -6,17 +6,19 @@ class Whatsapp extends Adapter
     @robot = robot
 
 	send: (envelope, strings...) ->
-		@wa.sendMessage recipient, strings, (err, id) ->
-            if err
-                console.log err.message
-                return
-            console.log 'Server received message %s', id
-            return
+        recipient = envelope.user.name
+        for msg in strings
+		          @wa.sendMessage recipient, msg, (err, id) ->
+                      if err
+                          console.log 'There was an ERROR!'
+                          console.log err.message
+                          return
+                    console.log 'Server received message %s', id
+                    return
 
 
 	reply: (envelope, strings...) ->
 		@robot.logger.info "Reply"
-
 
 	run: ->
 		options =
@@ -35,6 +37,7 @@ class Whatsapp extends Adapter
             ccode: options.countrycode
         ).connect (err) ->
             if err
+                console.log 'There was an error'
                 console.log err
                 return
             console.log 'Connected'
