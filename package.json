@@ -1,6 +1,6 @@
 {
     "name": "hubot-whatsapp",
-    "version": "0.1",
+    "version": "0.0.1",
     "description": "Whatsapp adapter for Hubot",
     "main": "src/whatsapp.coffee",
     "scripts": {
