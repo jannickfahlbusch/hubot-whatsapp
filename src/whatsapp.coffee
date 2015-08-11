@@ -26,10 +26,13 @@ class Whatsapp extends Adapter
         self.wa.login self.logged()
 
       @wa.on 'receivedMessage', (message) ->
-          from = message.from.split('@')[0]
-          self.receive new TextMessage from, message.body, message.id
-          return
+          self.newMsg message
+
       @emit 'connected'
+
+    newMsg: (message) ->
+        from = message.from.split('@')[0]
+        @robot.receive new TextMessage from, message.body, message.id
 
     logged: (err) ->
         if err
