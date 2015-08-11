@@ -5,33 +5,30 @@ whatsapi = require('whatsapi');
 class Whatsapp extends Adapter
 
   constructor: (@robot) ->
-    super
     @robot = robot
-    self = @
-    options =
-        username: process.env.HUBOT_WHATSAPP_PHONENUMBER
-        password: process.env.HUBOT_WHATSAPP_PASSWORD
-        nickname: process.env.HUBOT_WHATSAPP_NICKNAME
-        countrycode: process.env.HUBOT_WHATSAPP_COUNTRYCODE
 
-    @options = options
-    @wa = whatsapi.createAdapter(
-        msisdn: options.username,
-        username: options.nickname,
-        password: options.password,
-        ccode: options.countrycode
-    )
-    @wa.connect (err) ->
+  run: ->
+      self = @
+      @wa = whatsapi.createAdapter(
+        msisdn: process.env.HUBOT_WHATSAPP_PHONENUMBER,
+        username: process.env.HUBOT_WHATSAPP_NICKNAME,
+        password: process.env.HUBOT_WHATSAPP_PASSWORD,
+        ccode: process.env.HUBOT_WHATSAPP_COUNTRYCODE
+      )
+      @wa.connect (err) ->
         if err
-            console.log 'There was an error'
             console.log err
             return
         console.log 'Connected'
-        self.wa.login ->
-            if err
-                console.log err
-                return
-            self.wa.sendIsOnline()
+        self.wa.login self.logged()
+
+    logged: (err) ->
+        if err
+            console.log err
+            return
+        console.log 'Logged in!'
+        console.log 'I am ' + @wa.selfAddress.split('@')[0]
+        @wa.sendIsOnline()
 
 
 	send: (envelope, strings...) ->
@@ -54,15 +51,6 @@ class Whatsapp extends Adapter
 
     recieve: (message) ->
         @robot.recieve message
-
-	run: ->
-        self = @
-        # Create our WhatsApp-Object
-        @wa.on 'receivedMessage', (message) ->
-            console.log message
-            self.recieve new TextMessage message.from.split('@')[0], message.body, message.id
-        #@emit 'connected'
-
 
 exports.use = (robot) ->
 	new Whatsapp robot
