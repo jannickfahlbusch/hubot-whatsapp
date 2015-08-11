@@ -9,12 +9,12 @@ class Whatsapp extends Adapter
 
   run: ->
       self = @
-      @wa = whatsapi.createAdapter(
-        msisdn: process.env.HUBOT_WHATSAPP_PHONENUMBER,
-        username: process.env.HUBOT_WHATSAPP_NICKNAME,
-        password: process.env.HUBOT_WHATSAPP_PASSWORD,
+      @wa = whatsapi.createAdapter({
+        msisdn: process.env.HUBOT_WHATSAPP_PHONENUMBER
+        username: process.env.HUBOT_WHATSAPP_NICKNAME
+        password: process.env.HUBOT_WHATSAPP_PASSWORD
         ccode: process.env.HUBOT_WHATSAPP_COUNTRYCODE
-      )
+      }, true)
       @wa.connect (err) ->
         if err
             console.log err
@@ -22,13 +22,20 @@ class Whatsapp extends Adapter
         console.log 'Connected'
         self.wa.login self.logged()
 
+
+
     logged: (err) ->
         if err
             console.log err
             return
-        console.log 'Logged in!'
-        console.log 'I am ' + @wa.selfAddress.split('@')[0]
-        @wa.sendIsOnline()
+        console.log 'Logged in'
+        @wa.sendMessage process.env.HUBOT_WHATSAPP_OWNERNUMBER, 'I started successfully', (err, id) ->
+            if err
+                console.log err
+                return
+            console.log 'Server recieved message ' + id
+            @wa.sendIsOnline()
+            return
 
 
 	send: (envelope, strings...) ->
