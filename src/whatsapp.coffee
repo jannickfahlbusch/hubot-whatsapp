@@ -1,4 +1,4 @@
-{robot, Adapter, TextMessage, EnterMessage, LeaveMessage, TopicMessage} = require 'hubot'
+{Robot, Adapter, TextMessage, EnterMessage, LeaveMessage, TopicMessage} = require 'hubot'
 
 whatsapi = require('whatsapi');
 
@@ -7,6 +7,9 @@ class Whatsapp extends Adapter
   constructor: (@robot) ->
     @robot = robot
 
+  receive: (message) ->
+    @robot.receive message
+
   run: ->
       self = @
       @wa = whatsapi.createAdapter({
@@ -14,7 +17,7 @@ class Whatsapp extends Adapter
         username: process.env.HUBOT_WHATSAPP_NICKNAME
         password: process.env.HUBOT_WHATSAPP_PASSWORD
         ccode: process.env.HUBOT_WHATSAPP_COUNTRYCODE
-      }, true)
+      }, false)
       @wa.connect (err) ->
         if err
             console.log err
@@ -22,7 +25,11 @@ class Whatsapp extends Adapter
         console.log 'Connected'
         self.wa.login self.logged()
 
-
+      @wa.on 'receivedMessage', (message) ->
+          from = message.from.split('@')[0]
+          self.receive new TextMessage from, message.body, message.id
+          return
+      @emit 'connected'
 
     logged: (err) ->
         if err
@@ -34,12 +41,13 @@ class Whatsapp extends Adapter
                 console.log err
                 return
             console.log 'Server recieved message ' + id
-            @wa.sendIsOnline()
-            return
-
+            @sendIsOnline()
 
 	send: (envelope, strings...) ->
-        recipient = envelope.user.name.split('@')[0]
+        console.log 'Sending reply'
+        console.log envelope
+        console.log strings
+        recipient = envelope.user
         for msg in strings
 		          @wa.sendMessage recipient, msg, (err, id) ->
                       if err
@@ -50,14 +58,13 @@ class Whatsapp extends Adapter
                     return
 
     emote: (envelope, strings...) ->
+        console.log 'emote'
         @send envelope, "* #{str}" for str in strings
 
 	reply: (envelope, strings...) ->
+        console.log 'reply'
         strings = strings.map (s) -> "#{envelope.user.name}: #{s}"
         @send envelope, strings...
-
-    recieve: (message) ->
-        @robot.recieve message
 
 exports.use = (robot) ->
 	new Whatsapp robot
