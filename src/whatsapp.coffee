@@ -32,7 +32,6 @@ class Whatsapp extends Adapter
                 console.log err
                 return
             self.wa.sendIsOnline()
-    return @robot
 
 
 	send: (envelope, strings...) ->
