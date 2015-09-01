@@ -1,5 +1,5 @@
 #IMPORTANT
-This project is unmaintained, as i am developing a (PHP-Chatbot here)[https://github.com/Detlefff]
+This project is unmaintained, as i am developing a [PHP-Chatbot here](https://github.com/Detlefff)
 
 #Hubot-WhatsApp
 ---
