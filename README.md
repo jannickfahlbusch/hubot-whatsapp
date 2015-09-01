@@ -1,3 +1,6 @@
+#IMPORTANT
+This project is unmaintained, as i am developing a (PHP-Chatbot here)[https://github.com/Detlefff]
+
 #Hubot-WhatsApp
 ---
 THIS ADAPTER IS IN PRE-ALPHA STAGE. PLEASE USE IT CAREFULLY AS IT DOESN'T SYNC NUMBERS WITH WHATSAPP - YOU *_WILL_* GET BANNED!
