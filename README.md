@@ -8,7 +8,7 @@ This adapter is in pre-alpha stage. Use it carefully as it doesn't login the way
 This Hubot adapter adds support for interacting with Hubot via WhatsApp.
 
 ##Usage
-To use this adapter, you need to register a new phone-number to WhatsApp.
+To use this adapter, you need to register a new phone-number to WhatsApp. To do this, take a look at [yowsoup](https://github.com/tgalal/yowsup/wiki/yowsup-cli-2.0#yowsup-cli-registration)
 
 After you did this, set the environment variables:
 * HUBOT_WHATSAPP_PHONENUMBER (your PhoneNumber with CountryCode without '+')
