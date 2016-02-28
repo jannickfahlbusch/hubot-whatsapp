@@ -3,7 +3,7 @@ This project is unmaintained, as i am developing a [PHP-Chatbot here](https://gi
 
 #Hubot-WhatsApp
 ---
-THIS ADAPTER IS IN PRE-ALPHA STAGE. PLEASE USE IT CAREFULLY AS IT DOESN'T SYNC NUMBERS WITH WHATSAPP - YOU *_WILL_* GET BANNED!
+This adapter is in pre-alpha stage. Use it carefully as it doesn't login the way the app does - YOUR NUMBER *_WILL_* BE BANNED!
 ---
 This Hubot adapter adds support for interacting with Hubot via WhatsApp.
 
